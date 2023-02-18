@@ -93,7 +93,9 @@ class SignIn extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(context, 'home');
+                                },
                                 child: const Text(
                                   'Sign In',
                                   style: TextStyle(
