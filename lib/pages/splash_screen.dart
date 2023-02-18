@@ -1,5 +1,10 @@
+import 'package:diary/pages/sign_up.dart';
+import 'package:diary/pages/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:diary/services/constants.dart';
 
 class Splash extends StatelessWidget {
   const Splash({super.key});
@@ -7,38 +12,33 @@ class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Container(
-          color: const Color.fromRGBO(244, 242, 255, 1),
-          child: Stack(
-            children: [
-              CustomPaint(
-                size: Size(400, (640 * 1.8823529411764706).toDouble()),
-                painter: MyShape(),
+      child: AnimatedSplashScreen(
+        splashIconSize: 250,
+        centered: true,
+        duration: 1000,
+        splashTransition: SplashTransition.fadeTransition,
+        pageTransitionType: PageTransitionType.fade,
+        animationDuration: const Duration(
+          seconds: 1,
+        ),
+        nextScreen: SignIn(),
+        backgroundColor: secondaryColor,
+        splash: Column(
+          children: [
+            Image.asset(
+              'assets/logo.png',
+            ),
+            const Text(
+              'Deary',
+              style: TextStyle(
+                color: Color.fromRGBO(46, 96, 183, 1),
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.0,
+                fontSize: 40,
+                fontFamily: 'Pacifico-Regular',
               ),
-              Center(
-                child: SvgPicture.asset(
-                  'assets/logo.svg',
-                  fit: BoxFit.contain,
-                  width: 150,
-                ),
-              ),
-              const Positioned(
-                left: 140,
-                top: 450,
-                child: Text(
-                  'Deary',
-                  style: TextStyle(
-                    color: Color.fromRGBO(46, 96, 183, 1),
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.0,
-                    fontSize: 40,
-                    fontFamily: 'SFPBold',
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

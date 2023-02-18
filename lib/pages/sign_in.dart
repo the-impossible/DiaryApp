@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
 
-class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+class SignIn extends StatelessWidget {
+  const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class SignUp extends StatelessWidget {
                         top: 10,
                       ),
                       child: Text(
-                        'Sign Up',
+                        'Sign In',
                         style: TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.bold,
@@ -47,11 +47,6 @@ class SignUp extends StatelessWidget {
                       child: Column(
                         children: [
                           SignUpForm(
-                            text: 'Name',
-                            icon: Icons.person_outline_rounded,
-                            isSecured: false,
-                          ),
-                          SignUpForm(
                             text: 'Email',
                             icon: Icons.mail,
                             isSecured: false,
@@ -60,6 +55,27 @@ class SignUp extends StatelessWidget {
                             text: 'Password',
                             icon: Icons.password,
                             isSecured: true,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 30),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    'Forget password?',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'SFPReg',
+                                      color: primaryColor,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -79,7 +95,7 @@ class SignUp extends StatelessWidget {
                                 ),
                                 onPressed: () {},
                                 child: const Text(
-                                  'Sign Up',
+                                  'Sign In',
                                   style: TextStyle(
                                     fontFamily: 'SFPBold',
                                     fontSize: 20,
@@ -92,7 +108,7 @@ class SignUp extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'Already have an account?',
+                                "Don't have an account?",
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontFamily: 'SFPReg',
@@ -102,14 +118,15 @@ class SignUp extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.popAndPushNamed(context, 'sign_in');
+                                  Navigator.popAndPushNamed(context, 'sign_up');
                                 },
                                 child: const Text(
-                                  'Sign In',
+                                  'Sign Up',
                                   style: TextStyle(
                                     fontSize: 15,
                                     decoration: TextDecoration.underline,
                                     fontFamily: 'SFPReg',
+                                    fontWeight: FontWeight.bold,
                                     color: primaryColor,
                                     letterSpacing: 1,
                                   ),
