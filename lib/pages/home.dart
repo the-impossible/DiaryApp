@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
+import 'package:diary/services/home_decor.dart';
 import 'package:intl/intl.dart';
 
 final now = new DateTime.now();
@@ -99,23 +100,15 @@ class Home extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 20,
-                    top: 20,
+                    top: 30,
+                    right: 20,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
                       Text(
-                        day,
-                        style: const TextStyle(
-                          color: primaryColor,
-                          fontSize: 20.0,
-                          fontFamily: 'SFPReg',
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        " $month,",
-                        style: const TextStyle(
+                        "How do you feel?",
+                        style: TextStyle(
                           color: primaryColor,
                           fontSize: 15.0,
                           fontFamily: 'SFPReg',
@@ -123,8 +116,8 @@ class Home extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        " $year",
-                        style: const TextStyle(
+                        "How about Expressing it? 🔻",
+                        style: TextStyle(
                           color: primaryColor,
                           fontSize: 15.0,
                           fontFamily: 'SFPReg',
@@ -132,6 +125,49 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 40),
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: ((context, constraints) => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  HomeDecor(
+                                    height: .3,
+                                    constraints: constraints,
+                                    title: 'Plan for the day',
+                                    svg: 'assets/tasks.svg',
+                                  ),
+                                  const SizedBox(height: 25),
+                                  HomeDecor(
+                                    height: .3,
+                                    constraints: constraints,
+                                    title: 'Take Notes',
+                                    svg: 'assets/add_notes.svg',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  HomeDecor(
+                                    height: .65,
+                                    constraints: constraints,
+                                    title: 'Plan for the day',
+                                    svg: 'assets/reminder.svg',
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )),
                   ),
                 ),
               ],
