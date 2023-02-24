@@ -12,6 +12,7 @@ django-cors-headers = "*"
 markdown = "*"
 pillow = "*"
 djangorestframework-simplejwt = "*"
+python-decouple = "*"
 
 [dev-packages]
 
