@@ -4,12 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/services/home_decor.dart';
-import 'package:intl/intl.dart';
-
-final now = new DateTime.now();
-String day = DateFormat.d().format(now).toString();
-String month = DateFormat.MMMM().format(now).toString();
-String year = DateFormat.y().format(now).toString().toLowerCase();
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -19,6 +13,19 @@ class Home extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: Center(
+          heightFactor: 1.5,
+          child: FloatingActionButton(
+            onPressed: () => Navigator.pushNamed(context, 'take_note'),
+            backgroundColor: primaryColor,
+            elevation: 0.1,
+            child: const Icon(
+              Icons.add,
+              size: 30,
+              color: tertiaryColor,
+            ),
+          ),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         backgroundColor: tertiaryColor,
         body: Stack(
@@ -99,9 +106,9 @@ class Home extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    left: 20,
+                    left: 30,
                     top: 30,
-                    right: 20,
+                    right: 30,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,6 +136,7 @@ class Home extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 Expanded(
+                  flex: 1,
                   child: LayoutBuilder(
                     builder: ((context, constraints) => Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -184,19 +192,6 @@ class Home extends StatelessWidget {
                       size: Size(size.width, (340 * 0.1875).toDouble()),
                       painter: BottomShape(),
                     ),
-                    Center(
-                      heightFactor: 0,
-                      child: FloatingActionButton(
-                        onPressed: () {},
-                        backgroundColor: primaryColor,
-                        elevation: 0.1,
-                        child: const Icon(
-                          Icons.add,
-                          size: 30,
-                          color: tertiaryColor,
-                        ),
-                      ),
-                    ),
                     SizedBox(
                       width: size.width,
                       child: Row(
@@ -211,7 +206,8 @@ class Home extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () =>
+                                Navigator.pushNamed(context, 'all_notes'),
                             icon: const Icon(
                               Icons.dashboard,
                               size: 25,
@@ -255,7 +251,7 @@ class Home extends StatelessWidget {
                               ),
                             ),
                             const Text(
-                              'For You',
+                              'Notes',
                               style: TextStyle(
                                 fontFamily: 'SFPReg',
                                 fontSize: 13,

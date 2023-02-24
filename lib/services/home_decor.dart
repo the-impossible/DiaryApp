@@ -34,35 +34,37 @@ class HomeDecor extends StatelessWidget {
               offset: ui.Offset(0, 0),
             ),
           ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 10,
-              bottom: 10,
-            ),
-            child: Text(
-              title,
-              style: const TextStyle(
-                color: tertiaryColor,
-                fontFamily: 'SFPReg',
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+              ),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: tertiaryColor,
+                  fontFamily: 'SFPReg',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 8,
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 8,
+              ),
+              child: SvgPicture.asset(
+                svg,
+                fit: BoxFit.contain,
+                height: constraints.maxHeight * .2,
+              ),
             ),
-            child: SvgPicture.asset(
-              svg,
-              fit: BoxFit.contain,
-              height: constraints.maxHeight * .2,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
