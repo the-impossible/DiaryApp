@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
+import 'package:diary/controllers/login_controller.dart';
+import 'package:get/get.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -13,6 +15,8 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
+  LoginController loginController =
+      Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +62,14 @@ class _SignInState extends State<SignIn> {
                             text: 'Username',
                             icon: Icons.manage_accounts,
                             isSecured: false,
-                            formController: usernameController,
+                            formController: loginController.usernameController,
                             isVisible: false,
                           ),
                           SignUpForm(
                             text: 'Password',
                             icon: Icons.password,
                             isSecured: true,
-                            formController: passwordController,
+                            formController: loginController.passwordController,
                             isVisible: true,
                           ),
                           Padding(

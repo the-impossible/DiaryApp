@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
-import 'package:http/http.dart' as http;
+import 'package:diary/controllers/registration_controller.dart';
+import 'package:get/get.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -17,6 +18,8 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+    RegistrationController registrationController =
+        Get.put(RegistrationController(context: context));
     return SafeArea(
       child: Scaffold(
         backgroundColor: tertiaryColor,
@@ -59,25 +62,37 @@ class _SignUpState extends State<SignUp> {
                             text: 'Name',
                             icon: Icons.person_outline_rounded,
                             isSecured: false,
-                            formController: nameController,
+                            formController:
+                                registrationController.nameController,
                             isVisible: false,
-                            validator: validateName,
+                            validator: registrationController.validateName,
                           ),
                           SignUpForm(
                             text: 'Username',
                             icon: Icons.manage_accounts,
                             isSecured: false,
-                            formController: usernameController,
+                            formController:
+                                registrationController.usernameController,
                             isVisible: false,
-                            validator: validateUsername,
+                            validator: registrationController.validateUsername,
+                          ),
+                          SignUpForm(
+                            text: 'Email',
+                            icon: Icons.mail,
+                            isSecured: false,
+                            formController:
+                                registrationController.emailController,
+                            isVisible: false,
+                            validator: registrationController.validateEmail,
                           ),
                           SignUpForm(
                             text: 'Password',
                             icon: Icons.password,
                             isSecured: true,
-                            formController: passwordController,
+                            formController:
+                                registrationController.passwordController,
                             isVisible: true,
-                            validator: validatePassword,
+                            validator: registrationController.validatePassword,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -97,10 +112,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    print("Success");
-                                    nameController.clear();
-                                    usernameController.clear();
-                                    passwordController.clear();
+                                    registrationController.createAccount();
                                   }
                                 },
                                 child: const Text(

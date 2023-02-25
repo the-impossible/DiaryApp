@@ -1,9 +1,9 @@
 class APIEndPoints {
-  static const String baseURL = 'https://127.0.0.1:800/';
-  static final _AuthEndPoints _authEndPoints = _AuthEndPoints();
+  static const String baseURL = 'http://192.168.43.193:8000/';
+  static final AuthEndPoints authEndPoints = AuthEndPoints();
 }
 
-class _AuthEndPoints {
-  final String signUp = 'users/';
-  final String signIn = 'users/';
+class AuthEndPoints {
+  final String signUp = 'users/register/';
+  final String signIn = 'auth/login/';
 }
