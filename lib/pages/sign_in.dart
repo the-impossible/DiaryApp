@@ -4,8 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({super.key});
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +51,22 @@ class SignIn extends StatelessWidget {
                       height: 100,
                     ),
                     Form(
+                      key: _formKey,
                       child: Column(
                         children: [
                           SignUpForm(
-                            text: 'Email',
-                            icon: Icons.mail,
+                            text: 'Username',
+                            icon: Icons.manage_accounts,
                             isSecured: false,
+                            formController: usernameController,
+                            isVisible: false,
                           ),
                           SignUpForm(
                             text: 'Password',
                             icon: Icons.password,
                             isSecured: true,
+                            formController: passwordController,
+                            isVisible: true,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 30),

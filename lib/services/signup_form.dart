@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:diary/services/constants.dart';
 
-class SignUpForm extends StatelessWidget {
+class SignUpForm extends StatefulWidget {
   final String text;
   final IconData icon;
+  final TextEditingController formController;
+  final String? Function(String?)? validator;
   bool isSecured;
+  bool isVisible;
 
-  SignUpForm(
-      {required this.text, required this.icon, required this.isSecured, super.key});
+  SignUpForm({
+    required this.text,
+    required this.icon,
+    required this.isSecured,
+    required this.formController,
+    required this.isVisible,
+    this.validator,
+    super.key,
+  });
 
+  @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+bool passToggle = false;
+
+class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,7 +35,9 @@ class SignUpForm extends StatelessWidget {
         bottom: 20,
       ),
       child: TextFormField(
-        obscureText: isSecured,
+        controller: widget.formController,
+        obscureText: widget.isSecured ? passToggle : widget.isSecured,
+        validator: widget.validator,
         style: const TextStyle(
           fontSize: 18,
         ),
@@ -29,9 +48,20 @@ class SignUpForm extends StatelessWidget {
           ),
           fillColor: tertiaryColor,
           filled: true,
-          label: Text(text),
+          label: Text(widget.text),
+          suffix: Visibility(
+            visible: widget.isVisible,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  passToggle = !passToggle;
+                });
+              },
+              child: Icon(passToggle ? Icons.visibility : Icons.visibility_off),
+            ),
+          ),
           prefixIcon: Icon(
-            icon,
+            widget.icon,
             color: primaryColor,
           ),
           labelStyle: const TextStyle(

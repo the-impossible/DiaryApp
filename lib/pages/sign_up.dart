@@ -3,9 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
+import 'package:http/http.dart' as http;
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,22 +52,32 @@ class SignUp extends StatelessWidget {
                       height: 100,
                     ),
                     Form(
+                      key: _formKey,
                       child: Column(
                         children: [
                           SignUpForm(
                             text: 'Name',
                             icon: Icons.person_outline_rounded,
                             isSecured: false,
+                            formController: nameController,
+                            isVisible: false,
+                            validator: validateName,
                           ),
                           SignUpForm(
-                            text: 'Email',
-                            icon: Icons.mail,
+                            text: 'Username',
+                            icon: Icons.manage_accounts,
                             isSecured: false,
+                            formController: usernameController,
+                            isVisible: false,
+                            validator: validateUsername,
                           ),
                           SignUpForm(
                             text: 'Password',
                             icon: Icons.password,
                             isSecured: true,
+                            formController: passwordController,
+                            isVisible: true,
+                            validator: validatePassword,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -77,7 +95,14 @@ class SignUp extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    print("Success");
+                                    nameController.clear();
+                                    usernameController.clear();
+                                    passwordController.clear();
+                                  }
+                                },
                                 child: const Text(
                                   'Sign Up',
                                   style: TextStyle(
