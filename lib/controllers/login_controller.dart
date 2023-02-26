@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:diary/utils/endpoints.dart';
+import 'package:diary/pages/home.dart';
 import 'package:diary/utils/custom_snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,9 +11,21 @@ class LoginController extends GetxController {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is Required!';
+    }
+    return null;
+  }
 
-  Future<void> createAccount() async {
+  String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Username is Required!';
+    }
+    return null;
+  }
+
+  Future<void> signIn() async {
     try {
       var headers = {'Content-Type': 'application/json'};
       var url =
@@ -26,26 +39,44 @@ class LoginController extends GetxController {
           await http.post(url, body: jsonEncode(body), headers: headers);
 
       if (response.statusCode == 200) {
-        showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return const SimpleDialog(
-                title: Text("Successful"),
-                children: [Text("Registration Successful, you can now login")],
-              );
-            });
+        Map result = jsonDecode(response.body);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('refresh', result['refresh']);
+        await prefs.setString('access', result['access']);
+
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content:
+                CustomSnackBar(output: 'Login Successful', isSuccess: true),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+        );
         usernameController.clear();
         passwordController.clear();
+        Get.to(() => const Home());
+      } else {
+        String result = jsonDecode(response.body)['detail'];
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: CustomSnackBar(output: result, isSuccess: false),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+        );
       }
     } catch (e) {
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text("Failed"),
-              children: [Text(e.toString())],
-            );
-          });
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: CustomSnackBar(output: "FAILED: $e", isSuccess: true),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+      );
     }
   }
 }

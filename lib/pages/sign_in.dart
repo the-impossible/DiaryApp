@@ -15,8 +15,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  LoginController loginController =
-      Get.put(LoginController());
+  LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +63,7 @@ class _SignInState extends State<SignIn> {
                             isSecured: false,
                             formController: loginController.usernameController,
                             isVisible: false,
+                            validator: loginController.validateUsername,
                           ),
                           SignUpForm(
                             text: 'Password',
@@ -71,6 +71,7 @@ class _SignInState extends State<SignIn> {
                             isSecured: true,
                             formController: loginController.passwordController,
                             isVisible: true,
+                            validator: loginController.validatePassword,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 30),
@@ -110,7 +111,9 @@ class _SignInState extends State<SignIn> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'home');
+                                  if (_formKey.currentState!.validate()) {
+                                    loginController.signIn();
+                                  }
                                 },
                                 child: const Text(
                                   'Sign In',
