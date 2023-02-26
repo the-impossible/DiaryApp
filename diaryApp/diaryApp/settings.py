@@ -28,7 +28,7 @@ DEBUG = True
 
 STATIC_DIR = os.path.join(BASE_DIR, 'Static')
 
-ALLOWED_HOSTS = ['192.168.43.193']
+ALLOWED_HOSTS = ['192.168.43.193', '127.0.0.1']
 
 
 # Application definition

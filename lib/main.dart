@@ -5,9 +5,10 @@ import 'package:diary/pages/splash_screen.dart';
 import 'package:diary/pages/sign_up.dart';
 import 'package:diary/pages/sign_in.dart';
 import 'package:diary/pages/home.dart';
+import 'package:get/get.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/',
     routes: {

@@ -12,12 +12,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(
         required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        validators=[UniqueValidator(queryset=User.objects.all(), message='Email Already Exist')]
     )
 
     username = serializers.CharField(
         required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())],
+        validators=[UniqueValidator(queryset=User.objects.all(), message='Username Already Exist')],
     )
 
     password = serializers.CharField(
@@ -30,6 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Meta for the UserSerializer"""
         model = User
         fields = ['id','username', 'name', 'email', 'password']
 

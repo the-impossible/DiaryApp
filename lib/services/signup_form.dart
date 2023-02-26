@@ -23,7 +23,8 @@ class SignUpForm extends StatefulWidget {
   State<SignUpForm> createState() => _SignUpFormState();
 }
 
-bool passToggle = false;
+String? _errorMsg;
+bool passToggle = true;
 
 class _SignUpFormState extends State<SignUpForm> {
   @override
@@ -42,6 +43,7 @@ class _SignUpFormState extends State<SignUpForm> {
           fontSize: 18,
         ),
         decoration: InputDecoration(
+          errorText: _errorMsg,
           border: const UnderlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(Radius.circular(20)),

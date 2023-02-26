@@ -19,7 +19,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     RegistrationController registrationController =
-        Get.put(RegistrationController(context: context));
+        Get.put(RegistrationController());
     return SafeArea(
       child: Scaffold(
         backgroundColor: tertiaryColor,
