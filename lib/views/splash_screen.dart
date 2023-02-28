@@ -1,7 +1,6 @@
-import 'package:diary/pages/sign_up.dart';
-import 'package:diary/pages/sign_in.dart';
+import 'package:diary/views/sign_up.dart';
+import 'package:diary/views/sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:diary/services/constants.dart';
@@ -21,7 +20,7 @@ class Splash extends StatelessWidget {
         animationDuration: const Duration(
           seconds: 1,
         ),
-        nextScreen: SignIn(),
+        nextScreen: const SignIn(),
         backgroundColor: secondaryColor,
         splash: Column(
           children: [

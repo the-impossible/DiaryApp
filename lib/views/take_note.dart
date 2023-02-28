@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/services/home_decor.dart';
+import 'package:get/get.dart';
 
 class TakeNote extends StatelessWidget {
   const TakeNote({super.key});
@@ -160,7 +161,7 @@ class TakeNote extends StatelessWidget {
 PreferredSizeWidget _appBar(BuildContext context) {
   return AppBar(
     leading: IconButton(
-      onPressed: () => Navigator.pop(context),
+      onPressed: () => Get.back() ,
       icon: const Icon(
         Icons.arrow_back,
         size: 28,

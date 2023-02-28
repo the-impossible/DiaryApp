@@ -1,12 +1,18 @@
 import 'dart:ui' as ui;
+import 'package:diary/models/user_profile.dart';
+import 'package:diary/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
+import 'package:diary/controllers/profile_controller.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/services/home_decor.dart';
+import 'package:get/get.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Home({super.key});
+
+  ProfileController profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,7 @@ class Home extends StatelessWidget {
         floatingActionButton: Center(
           heightFactor: 1.5,
           child: FloatingActionButton(
-            onPressed: () => Navigator.pushNamed(context, 'take_note'),
+            onPressed: () => Get.toNamed(Routes.takeNote),
             backgroundColor: primaryColor,
             elevation: 0.1,
             child: const Icon(
@@ -43,27 +49,30 @@ class Home extends StatelessWidget {
                     left: 20,
                     right: 20,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Hello, Olivia! 👋',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 20.0,
-                          letterSpacing: 1.0,
-                          fontFamily: 'SFPReg',
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      CircleAvatar(
-                        maxRadius: 20,
-                        minRadius: 20,
-                        child: Image.asset(
-                          'assets/comlogo.png',
-                        ),
-                      ),
-                    ],
+                  child: Obx(
+                    () => profileController.isLoading.value
+                        ? const CircularProgressIndicator()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Hello, ${profileController.userProfile?.username}👋",
+                                style: const TextStyle(
+                                  color: primaryColor,
+                                  fontSize: 20.0,
+                                  letterSpacing: 1.0,
+                                  fontFamily: 'SFPReg',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              CircleAvatar(
+                                maxRadius: 20,
+                                minRadius: 20,
+                                child: Image.memory(
+                                    profileController.userProfile!.image),
+                              ),
+                            ],
+                          ),
                   ),
                 ),
                 Padding(
@@ -198,7 +207,7 @@ class Home extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () => {},
                             icon: const Icon(
                               Icons.house,
                               size: 25,
@@ -206,8 +215,7 @@ class Home extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, 'all_notes'),
+                            onPressed: () => Get.toNamed(Routes.allNotes),
                             icon: const Icon(
                               Icons.dashboard,
                               size: 25,

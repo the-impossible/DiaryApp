@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/services/list_notes.dart';
+import 'package:get/get.dart';
 
 class AllNotes extends StatelessWidget {
   const AllNotes({super.key});
@@ -104,7 +105,7 @@ class AllNotes extends StatelessWidget {
 PreferredSizeWidget _appBar(BuildContext context) {
   return AppBar(
     leading: IconButton(
-      onPressed: () => Navigator.pop(context),
+      onPressed: () => Get.back(),
       icon: const Icon(
         Icons.arrow_back,
         size: 28,

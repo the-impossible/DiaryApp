@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:diary/pages/sign_in.dart';
+import 'package:diary/views/sign_in.dart';
 import 'package:diary/utils/endpoints.dart';
 import 'package:diary/utils/custom_snackBar.dart';
 import 'package:flutter/material.dart';

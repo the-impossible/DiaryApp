@@ -6,4 +6,5 @@ class APIEndPoints {
 class AuthEndPoints {
   final String signUp = 'users/register/';
   final String signIn = 'auth/login/';
+  final String profile = 'users/user/';
 }

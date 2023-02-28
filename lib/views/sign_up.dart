@@ -1,24 +1,27 @@
 import 'dart:ui' as ui;
+import 'package:diary/routes/routes.dart';
+import 'package:diary/views/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
-import 'package:diary/controllers/login_controller.dart';
+import 'package:diary/controllers/registration_controller.dart';
 import 'package:get/get.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
+    RegistrationController registrationController =
+        Get.put(RegistrationController());
     return SafeArea(
       child: Scaffold(
         backgroundColor: tertiaryColor,
@@ -40,7 +43,7 @@ class _SignInState extends State<SignIn> {
                         top: 10,
                       ),
                       child: Text(
-                        'Sign In',
+                        'Sign Up',
                         style: TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.bold,
@@ -58,41 +61,40 @@ class _SignInState extends State<SignIn> {
                       child: Column(
                         children: [
                           SignUpForm(
+                            text: 'Name',
+                            icon: Icons.person_outline_rounded,
+                            isSecured: false,
+                            formController:
+                                registrationController.nameController,
+                            isVisible: false,
+                            validator: registrationController.validateName,
+                          ),
+                          SignUpForm(
                             text: 'Username',
                             icon: Icons.manage_accounts,
                             isSecured: false,
-                            formController: loginController.usernameController,
+                            formController:
+                                registrationController.usernameController,
                             isVisible: false,
-                            validator: loginController.validateUsername,
+                            validator: registrationController.validateUsername,
+                          ),
+                          SignUpForm(
+                            text: 'Email',
+                            icon: Icons.mail,
+                            isSecured: false,
+                            formController:
+                                registrationController.emailController,
+                            isVisible: false,
+                            validator: registrationController.validateEmail,
                           ),
                           SignUpForm(
                             text: 'Password',
                             icon: Icons.password,
                             isSecured: true,
-                            formController: loginController.passwordController,
+                            formController:
+                                registrationController.passwordController,
                             isVisible: true,
-                            validator: loginController.validatePassword,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 30),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Forget password?',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      decoration: TextDecoration.underline,
-                                      fontFamily: 'SFPReg',
-                                      color: primaryColor,
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            validator: registrationController.validatePassword,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -112,11 +114,11 @@ class _SignInState extends State<SignIn> {
                                 ),
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    loginController.signIn();
+                                    registrationController.createAccount();
                                   }
                                 },
                                 child: const Text(
-                                  'Sign In',
+                                  'Sign Up',
                                   style: TextStyle(
                                     fontFamily: 'SFPBold',
                                     fontSize: 20,
@@ -129,7 +131,7 @@ class _SignInState extends State<SignIn> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                "Don't have an account?",
+                                'Already have an account?',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontFamily: 'SFPReg',
@@ -138,16 +140,13 @@ class _SignInState extends State<SignIn> {
                                 ),
                               ),
                               TextButton(
-                                onPressed: () {
-                                  Navigator.popAndPushNamed(context, 'sign_up');
-                                },
+                                onPressed: () => Get.toNamed(Routes.signIn),
                                 child: const Text(
-                                  'Sign Up',
+                                  'Sign In',
                                   style: TextStyle(
                                     fontSize: 15,
                                     decoration: TextDecoration.underline,
                                     fontFamily: 'SFPReg',
-                                    fontWeight: FontWeight.bold,
                                     color: primaryColor,
                                     letterSpacing: 1,
                                   ),
