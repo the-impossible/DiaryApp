@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
         body: Stack(
           children: [
             CustomPaint(
-              size: Size(400, (340 * 1.7777777777777777).toDouble()),
+              size: Size(size.width, (340 * 1.7777777777777777).toDouble()),
               painter: MyShape(),
             ),
             Column(

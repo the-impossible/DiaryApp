@@ -58,10 +58,9 @@ class LoginController extends GetxController {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('refresh', tokenController.refresh);
         await prefs.setString('access', tokenController.access);
-
+        Get.put(ProfileController());
         usernameController.clear();
         passwordController.clear();
-        Get.put(ProfileController());
       } else {
         String result = jsonDecode(response.body)['detail'];
         ScaffoldMessenger.of(Get.context!).showSnackBar(
@@ -84,58 +83,4 @@ class LoginController extends GetxController {
       );
     }
   }
-
-  // getUserProfile() async {
-  //   Get.showOverlay(
-  //       asyncFunction: () => getProfile(), loadingWidget: const Loading());
-  // }
-
-  // Future<void> getProfile() async {
-  //   Map token = await preferences.getToken();
-  //   try {
-  //     var headers = {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ${token['access']}'
-  //     };
-  //     var url =
-  //         Uri.parse(APIEndPoints.baseURL + APIEndPoints.authEndPoints.profile);
-
-  //     http.Response response = await http.get(url, headers: headers);
-  //     ScaffoldMessenger.of(Get.context!).showSnackBar(
-  //         SnackBar(
-  //           content: CustomSnackBar(
-  //               output: 'Unable to fetch profile', isSuccess: false),
-  //           behavior: SnackBarBehavior.floating,
-  //           backgroundColor: Colors.transparent,
-  //           elevation: 0,
-  //         ),
-  //       );
-  //     if (response.statusCode == 200) {
-  //       UserProfile userProfile = userProfileFromJson(response.body);
-
-  //       Get.to(() => Home());
-  //     } else {
-  //       ScaffoldMessenger.of(Get.context!).showSnackBar(
-  //         SnackBar(
-  //           content: CustomSnackBar(
-  //               output: 'Unable to fetch profile', isSuccess: false),
-  //           behavior: SnackBarBehavior.floating,
-  //           backgroundColor: Colors.transparent,
-  //           elevation: 0,
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     String output = "FAILED: $e";
-  //     ScaffoldMessenger.of(Get.context!).showSnackBar(
-  //       SnackBar(
-  //         content: CustomSnackBar(output: output, isSuccess: false),
-  //         behavior: SnackBarBehavior.floating,
-  //         backgroundColor: Colors.transparent,
-  //         elevation: 0,
-  //       ),
-  //     );
-  //   }
-  //   return null;
-  // }
 }

@@ -34,7 +34,7 @@ final getPages = [
   ),
   GetPage(
     name: Routes.takeNote,
-    page: () => const TakeNote(),
+    page: () => TakeNote(),
   ),
   GetPage(
     name: Routes.allNotes,

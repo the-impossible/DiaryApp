@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:diary/controllers/mood_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
@@ -7,8 +8,9 @@ import 'package:diary/services/home_decor.dart';
 import 'package:get/get.dart';
 
 class TakeNote extends StatelessWidget {
-  const TakeNote({super.key});
+  TakeNote({super.key});
 
+  MoodController moodController = Get.put(MoodController());
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -161,7 +163,7 @@ class TakeNote extends StatelessWidget {
 PreferredSizeWidget _appBar(BuildContext context) {
   return AppBar(
     leading: IconButton(
-      onPressed: () => Get.back() ,
+      onPressed: () => Get.back(),
       icon: const Icon(
         Icons.arrow_back,
         size: 28,

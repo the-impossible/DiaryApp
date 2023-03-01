@@ -22,6 +22,8 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     RegistrationController registrationController =
         Get.put(RegistrationController());
+    final Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: tertiaryColor,
@@ -31,7 +33,7 @@ class _SignUpState extends State<SignUp> {
             child: Stack(
               children: [
                 CustomPaint(
-                  size: Size(400, (340 * 1.7777777777777777).toDouble()),
+                  size: Size(size.width, (340 * 1.7777777777777777).toDouble()),
                   painter: MyShape(),
                 ),
                 Column(
