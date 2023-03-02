@@ -1,22 +1,53 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:diary/controllers/mood_controller.dart';
+import 'package:diary/controllers/take_note_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
-import 'package:diary/services/signup_form.dart';
-import 'package:diary/services/home_decor.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
-class TakeNote extends StatelessWidget {
+class TakeNote extends StatefulWidget {
   TakeNote({super.key});
 
-  MoodController moodController = Get.put(MoodController());
+  @override
+  State<TakeNote> createState() => _TakeNoteState();
+}
+
+TakeNoteController takeNoteController = Get.put(TakeNoteController());
+
+class _TakeNoteState extends State<TakeNote> {
+  File? image;
+
+  final MoodController moodController = Get.put(MoodController());
+
+  Future pickImage() async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (pickedFile == null) return;
+
+      setState(() {
+        image = File(pickedFile.path);
+        takeNoteController.image = image;
+        print(takeNoteController.image);
+      });
+    } on PlatformException catch (e) {
+      print("Failed to Capture image: $e");
+    }
+  }
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    TakeNoteController takeNoteController = Get.put(TakeNoteController());
     return SafeArea(
       child: Scaffold(
-        appBar: _appBar(context),
+        appBar: _appBar(context, _formKey),
         body: SingleChildScrollView(
           child: Stack(
             children: [
@@ -78,6 +109,7 @@ class TakeNote extends StatelessWidget {
                   top: 70,
                 ),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -92,16 +124,20 @@ class TakeNote extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+                        controller: takeNoteController.titleController,
+                        validator: takeNoteController.validateTitle,
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
                           color: primaryColor,
                         ),
                       ),
-                      const TextField(
+                      TextFormField(
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
-                        decoration: InputDecoration(
+                        controller: takeNoteController.noteController,
+                        validator: takeNoteController.validateNote,
+                        decoration: const InputDecoration(
                           border:
                               OutlineInputBorder(borderSide: BorderSide.none),
                           hintText: 'Write more here...',
@@ -111,40 +147,77 @@ class TakeNote extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                           color: primaryColor,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(
+                      Padding(
+                        padding: const EdgeInsets.only(
                           left: 10,
                           right: 10,
                           top: 70,
                         ),
-                        child: Text(
-                          'What is your current mood?  +',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: primaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                          top: 20,
-                        ),
-                        child: Text(
-                          'Add photo                                 +',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: primaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: const [
+                                Text(
+                                  'Current mood?',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                SizedBox(
+                                  width: 180,
+                                  child: MoodDropdownMenu(),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Add photo ?',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.camera_alt_rounded,
+                                    color: primaryColor,
+                                    size: 30,
+                                  ),
+                                  onPressed: () => pickImage(),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                image != null
+                                    ? Image.file(
+                                        image!,
+                                        fit: BoxFit.contain,
+                                        height: size.height * .2,
+                                        width: size.width * .3,
+                                      )
+                                    : Image.asset(
+                                        "assets/default.jpg",
+                                        fit: BoxFit.contain,
+                                        height: size.height * .2,
+                                        width: size.width * .3,
+                                      ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -160,7 +233,53 @@ class TakeNote extends StatelessWidget {
   }
 }
 
-PreferredSizeWidget _appBar(BuildContext context) {
+class MoodDropdownMenu extends StatefulWidget {
+  const MoodDropdownMenu({super.key});
+
+  @override
+  State<MoodDropdownMenu> createState() => _MoodDropdownMenuState();
+}
+
+class _MoodDropdownMenuState extends State<MoodDropdownMenu> {
+  @override
+  Widget build(BuildContext context) {
+    MoodController moodController = Get.put(MoodController());
+
+    Map<String, String> emotions = {};
+
+    for (var element in moodController.allMood!) {
+      emotions[element.id.toString()] = element.mood;
+    }
+    String? selectedEmotion;
+
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primaryColor, width: 2),
+        ),
+      ),
+      value: selectedEmotion,
+      hint: const Text('Select an emotion'),
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedEmotion = newValue!;
+          takeNoteController.selectedEmotion = selectedEmotion;
+          print(takeNoteController.selectedEmotion);
+        });
+      },
+      items: emotions.entries
+          .map((emotion) => DropdownMenuItem<String>(
+                value: emotion.key,
+                child: Text(emotion.value),
+              ))
+          .toList(),
+    );
+  }
+}
+
+PreferredSizeWidget _appBar(BuildContext context, formKey) {
+  TakeNoteController takeNoteController = Get.put(TakeNoteController());
   return AppBar(
     leading: IconButton(
       onPressed: () => Get.back(),
@@ -176,7 +295,10 @@ PreferredSizeWidget _appBar(BuildContext context) {
       Padding(
         padding: const EdgeInsets.only(right: 20),
         child: TextButton(
-          onPressed: () {},
+          onPressed: () {
+            if (formKey.currentState!.validate()) {}
+            takeNoteController.takeNote();
+          },
           child: const Text(
             'Save',
             style: TextStyle(

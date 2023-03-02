@@ -2,16 +2,18 @@
 from rest_framework import serializers
 from Notes.models import Notes, Mood
 
+
 class NoteSerializers(serializers.ModelSerializer):
     """_NoteSerializer_
 
     Args:
         serializers (_type_): _Serializing the Note model to for API calls_
     """
+
     class Meta:
         """Meta for the NoteSerializer"""
         model = Notes
-        fields = ['id','title', 'mood', 'note', 'user_id', 'pic']
+        fields = ['id','title', 'mood', 'note', 'user_id', 'pic', 'date_created']
 
 
 class MoodSerializers(serializers.ModelSerializer):

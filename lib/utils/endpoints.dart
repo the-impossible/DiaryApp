@@ -8,4 +8,5 @@ class AuthEndPoints {
   final String signIn = 'auth/login/';
   final String profile = 'users/user/';
   final String allMoods = 'notes/get_moods/';
+  final String takeNote = 'notes/create_note/';
 }

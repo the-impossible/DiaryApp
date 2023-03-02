@@ -32,6 +32,7 @@ class Notes(models.Model):
     note = models.TextField()
     mood = models.ForeignKey(Mood, on_delete=models.CASCADE)
     pic = models.ImageField(null=True, blank=True, upload_to='uploads/notes/')
+    date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.title}'

@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import 'mood_controller.dart';
+
 class ProfileController extends GetxController {
   Preferences preferences = Preferences();
 
   UserProfile? userProfile;
-
 
   @override
   void onInit() {
@@ -37,17 +38,10 @@ class ProfileController extends GetxController {
 
       if (response.statusCode == 200) {
         userProfile = userProfileFromJson(response.body);
+
         isLoading(true);
         Get.to(() => Home());
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(
-            content: CustomSnackBar(
-                output: 'Login Successful', isSuccess: true),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-        );
+        Get.put(MoodController());
       } else {
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           SnackBar(

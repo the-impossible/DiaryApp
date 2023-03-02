@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:diary/models/all_mood.dart';
 import 'package:diary/utils/endpoints.dart';
 import 'package:diary/utils/loading.dart';
@@ -21,8 +23,10 @@ class MoodController extends GetxController {
     try {
       var headers = {
         'Content-Type': 'application/json',
+        'encoding': 'utf-8',
         'Authorization': 'Bearer ${token['access']}'
       };
+
       var url =
           Uri.parse(APIEndPoints.baseURL + APIEndPoints.authEndPoints.allMoods);
 
@@ -30,7 +34,9 @@ class MoodController extends GetxController {
 
       if (response.statusCode == 200) {
         allMood = allMoodsFromJson(response.body);
-        print(response.body);
+        // print(response.body);
+      } else {
+        // print(response.body);
       }
     } catch (e) {
       String output = "FAILED: $e";

@@ -12,7 +12,7 @@ from Notes.serializers import (
 from Notes.models import (
     Mood,
 )
-
+import base64
 # Create your views here.
 class CreateNoteView(generics.CreateAPIView):
 
