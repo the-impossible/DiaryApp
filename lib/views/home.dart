@@ -11,6 +11,8 @@ class Home extends StatelessWidget {
 
   ProfileController profileController = Get.put(ProfileController());
 
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -42,8 +44,21 @@ class Home extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Builder(builder: (context) {
+                    return IconButton(
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      icon: const Icon(
+                        Icons.menu,
+                        color: primaryColor,
+                        size: 25,
+                      ),
+                    );
+                  }),
+                ),
+                Padding(
                   padding: const EdgeInsets.only(
-                    top: 50,
+                    top: 10,
                     left: 20,
                     right: 20,
                   ),
@@ -259,18 +274,26 @@ Widget buildMenuItems(BuildContext context) => Container(
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Home'),
-            onTap: () => Get.toNamed(Routes.home),
+            onTap: () {
+              Navigator.pop(context);
+              Get.toNamed(Routes.home);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.book_rounded),
             title: const Text('Take Note'),
-            onTap: () => Get.toNamed(Routes.takeNote),
+            onTap: () {
+              Navigator.pop(context);
+              Get.toNamed(Routes.takeNote);
+            },
           ),
           ListTile(
-            leading: const Icon(Icons.dashboard),
-            title: const Text('Notes'),
-            onTap: () => Get.toNamed(Routes.allNotes),
-          ),
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Notes'),
+              onTap: () {
+                Navigator.pop(context);
+                Get.toNamed(Routes.allNotes);
+              }),
           ListTile(
             leading: const Icon(Icons.task),
             title: const Text('Tasks'),
