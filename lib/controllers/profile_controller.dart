@@ -42,6 +42,7 @@ class ProfileController extends GetxController {
         isLoading(true);
         Get.to(() => Home());
         Get.put(MoodController());
+        
       } else {
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           SnackBar(

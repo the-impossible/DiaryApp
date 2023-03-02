@@ -1,12 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:diary/controllers/profile_controller.dart';
+import 'package:diary/routes/routes.dart';
 import 'package:diary/utils/endpoints.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:diary/utils/preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
+import 'package:diary/utils/custom_snackBar.dart';
+import 'package:flutter/material.dart';
 
 class TakeNoteController extends GetxController {
   Preferences preferences = Preferences();
@@ -34,7 +34,6 @@ class TakeNoteController extends GetxController {
 
   Future<void> takeNote() async {
     Map token = await preferences.getToken();
-    final bytes = image!.readAsBytesSync();
 
     try {
       var headers = {
@@ -59,11 +58,39 @@ class TakeNoteController extends GetxController {
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 201) {
-        print("Successful");
+        // Route to All notes page
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: CustomSnackBar(
+                output: 'Note Uploaded successfully!', isSuccess: true),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+        );
+        Get.toNamed(Routes.home);
+        titleController.clear();
+        noteController.clear();
       } else {
-        print("FAILED");
-        print(response.reasonPhrase);
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: CustomSnackBar(
+                output: '${response.reasonPhrase}', isSuccess: false),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+        );
       }
-    } catch (e) {}
+    } catch (e) {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: CustomSnackBar(output: '$e', isSuccess: false),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+      );
+    }
   }
 }

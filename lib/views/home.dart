@@ -1,11 +1,8 @@
 import 'dart:ui' as ui;
-import 'package:diary/models/user_profile.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/controllers/profile_controller.dart';
-import 'package:diary/services/signup_form.dart';
 import 'package:diary/services/home_decor.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +30,7 @@ class Home extends StatelessWidget {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        drawer: const NavigationDrawer(),
         backgroundColor: tertiaryColor,
         body: Stack(
           children: [
@@ -189,120 +187,107 @@ class Home extends StatelessWidget {
                 ),
               ],
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              child: SizedBox(
-                width: size.width,
-                height: 60,
-                child: Stack(
-                  children: [
-                    CustomPaint(
-                      size: Size(size.width, (340 * 0.1875).toDouble()),
-                      painter: BottomShape(),
-                    ),
-                    SizedBox(
-                      width: size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            onPressed: () => {},
-                            icon: const Icon(
-                              Icons.house,
-                              size: 25,
-                              color: primaryColor,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () => Get.toNamed(Routes.allNotes),
-                            icon: const Icon(
-                              Icons.dashboard,
-                              size: 25,
-                              color: primaryColor,
-                            ),
-                          ),
-                          SizedBox(width: size.width * 0.20),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.task,
-                              size: 25,
-                              color: primaryColor,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.person,
-                              size: 25,
-                              color: primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 5,
-                      child: SizedBox(
-                        width: size.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Text(
-                              'Home',
-                              style: TextStyle(
-                                fontFamily: 'SFPReg',
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            const Text(
-                              'Notes',
-                              style: TextStyle(
-                                fontFamily: 'SFPReg',
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            SizedBox(
-                              width: size.width * 0.20,
-                            ),
-                            const Text(
-                              'Tasks',
-                              style: TextStyle(
-                                fontFamily: 'SFPReg',
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            const Text(
-                              'Profile',
-                              style: TextStyle(
-                                fontFamily: 'SFPReg',
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            //
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 }
+
+class NavigationDrawer extends StatelessWidget {
+  const NavigationDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    ProfileController profileController = Get.put(ProfileController());
+    return Drawer(
+      backgroundColor: secondaryColor,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(context, profileController),
+            buildMenuItems(context),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget buildHeader(BuildContext context, dynamic profileController) => Material(
+      color: blueColor,
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * .05,
+              bottom: MediaQuery.of(context).size.height * .05),
+          child: Column(
+            children: [
+              CircleAvatar(
+                maxRadius: 50,
+                minRadius: 50,
+                child: Image.memory(profileController.userProfile!.image),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                "${profileController.userProfile.name}",
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w300,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                "${profileController.userProfile.email}",
+                style: const TextStyle(
+                  fontSize: 16,
+                  letterSpacing: 1,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+Widget buildMenuItems(BuildContext context) => Container(
+      padding: const EdgeInsets.all(24),
+      child: Wrap(
+        runSpacing: 10,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Home'),
+            onTap: () => Get.toNamed(Routes.home),
+          ),
+          ListTile(
+            leading: const Icon(Icons.book_rounded),
+            title: const Text('Take Note'),
+            onTap: () => Get.toNamed(Routes.takeNote),
+          ),
+          ListTile(
+            leading: const Icon(Icons.dashboard),
+            title: const Text('Notes'),
+            onTap: () => Get.toNamed(Routes.allNotes),
+          ),
+          ListTile(
+            leading: const Icon(Icons.task),
+            title: const Text('Tasks'),
+            onTap: () {},
+          ),
+          const Divider(
+            color: Colors.black54,
+            thickness: 1,
+          ),
+          ListTile(
+            leading: const Icon(Icons.login_rounded),
+            title: const Text('Logout'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
 
 class MyShape extends CustomPainter {
   @override
@@ -352,57 +337,6 @@ class MyShape extends CustomPainter {
     path0.lineTo(0, size.height * 0.8625000);
     path0.quadraticBezierTo(
         0, size.height * 0.6573594, 0, size.height * 0.1731875);
-    path0.close();
-
-    canvas.drawPath(path0, paint0);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class BottomShape extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint0 = Paint()
-      ..color = const Color.fromARGB(255, 33, 150, 243)
-      ..style = PaintingStyle.fill
-      ..strokeWidth = 1.0;
-    paint0.shader = ui.Gradient.linear(
-        Offset(0, size.height * 0.67),
-        Offset(size.width, size.height * 0.67),
-        [secondaryColor, purpleColor],
-        [0.00, 1.00]);
-
-    Path path0 = Path();
-    path0.moveTo(size.width * 0.0392125, 0);
-    path0.quadraticBezierTo(size.width * 0.0042125, size.height * 0.0448667, 0,
-        size.height * 0.2174667);
-    path0.lineTo(0, size.height * 1.1074667);
-    path0.quadraticBezierTo(size.width * 0.0033375, size.height * 1.2996667,
-        size.width * 0.0406250, size.height * 1.3333333);
-    path0.cubicTo(
-        size.width * 0.2708250,
-        size.height * 1.3333333,
-        size.width * 0.7312250,
-        size.height * 1.3333333,
-        size.width * 0.9614250,
-        size.height * 1.3333333);
-    path0.quadraticBezierTo(size.width * 0.9940125, size.height * 1.3142667,
-        size.width, size.height * 1.1151333);
-    path0.lineTo(size.width, size.height * 0.2082667);
-    path0.quadraticBezierTo(size.width * 0.9927000, size.height * 0.0216000,
-        size.width * 0.9596125, 0);
-    path0.cubicTo(size.width * 0.8767656, 0, size.width * 0.7079375, 0,
-        size.width * 0.6250875, 0);
-    path0.quadraticBezierTo(size.width * 0.5996875, size.height * 0.6570000,
-        size.width * 0.4981625, size.height * 0.6668000);
-    path0.quadraticBezierTo(size.width * 0.4002125, size.height * 0.6798000,
-        size.width * 0.3749125, 0);
-    path0.cubicTo(size.width * 0.2917750, 0, size.width * 0.2886250, 0,
-        size.width * 0.0392125, 0);
     path0.close();
 
     canvas.drawPath(path0, paint0);
