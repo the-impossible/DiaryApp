@@ -9,4 +9,5 @@ class AuthEndPoints {
   final String profile = 'users/user/';
   final String allMoods = 'notes/get_moods/';
   final String takeNote = 'notes/create_note/';
+  final String allNotes = 'notes/get_notes/';
 }

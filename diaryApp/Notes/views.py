@@ -7,10 +7,12 @@ from rest_framework import permissions
 from Notes.serializers import (
     NoteSerializers,
     MoodSerializers,
+    AllNotesSerializers,
 )
 
 from Notes.models import (
     Mood,
+    Notes,
 )
 import base64
 # Create your views here.
@@ -31,4 +33,14 @@ class GetMoodsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     model = Mood
     queryset = Mood.objects.all()
+
+class GetNotesView(generics.ListAPIView):
+    """This view gets all notes from a user"""
+    serializer_class = AllNotesSerializers
+    permission_classes = (permissions.IsAuthenticated,)
+    model = Notes
+    queryset = Notes.objects.all()
+
+    def get_queryset(self):
+        return Notes.objects.filter(user_id=self.request.user).order_by('-date_created')
 

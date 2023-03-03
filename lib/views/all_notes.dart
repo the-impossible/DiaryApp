@@ -1,9 +1,8 @@
 import 'dart:ui' as ui;
+import 'package:diary/controllers/notes_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
-import 'package:diary/services/signup_form.dart';
-import 'package:diary/services/list_notes.dart';
 import 'package:get/get.dart';
 
 class AllNotes extends StatelessWidget {
@@ -14,86 +13,98 @@ class AllNotes extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        appBar: _appBar(context),
+        // appBar: _appBar(context),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 1,
-              child: Stack(
-                children: [
-                  CustomPaint(
-                    size:
-                        Size(size.width, (340 * 1.7777777777777777).toDouble()),
-                    painter: MyShape(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/note.svg',
-                        fit: BoxFit.contain,
-                        height: 60,
-                      ),
-                      const Text(
-                        'Notes',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: primaryColor,
-                          fontFamily: 'SFPBold',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.search,
-                          color: primaryColor,
-                          size: 30,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 7,
-              child: LayoutBuilder(
-                builder: (context, constraints) => SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListNotes(
-                          constraints: constraints,
-                          title: '5 Ways To Improve Your Self Esteem'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'How to Start Sleeping Better Than Ever'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'Personality Growth and Career Success'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'Dealing With Anxiety And Stress'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'Trusting Feelings Over Facts'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'Trusting Feelings Over Facts'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'Trusting Feelings Over Facts'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'Trusting Feelings Over Facts'),
-                      ListNotes(
-                          constraints: constraints,
-                          title: 'Trusting Feelings Over Facts'),
-                    ],
-                  ),
+            Builder(builder: (context) {
+              return IconButton(
+                onPressed: () => Get.back(),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  size: 28,
+                  color: primaryColor,
                 ),
-              ),
-            )
+              );
+            }),
+            Stack(
+              children: [
+                CustomPaint(
+                  size: Size(size.width, (340 * 1.7777777777777777).toDouble()),
+                  painter: MyShape(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/note.svg',
+                      fit: BoxFit.contain,
+                      height: 60,
+                    ),
+                    const Text(
+                      'Notes',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: primaryColor,
+                        fontFamily: 'SFPBold',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.search,
+                        color: primaryColor,
+                        size: 30,
+                      ),
+                    )
+                  ],
+                ),
+                Positioned(
+                  top: size.height * .12,
+                  child: SizedBox(
+                      width: size.width,
+                      height: size.height,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: GetX<NotesController>(
+                              builder: (controller) {
+                                return ListView.builder(
+                                  itemCount: controller.notes.length,
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                      margin: const EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 20,
+                                          right: 20),
+                                      elevation: 3,
+                                      color: tertiaryColor,
+                                      shadowColor: primaryColor,
+                                      child: ListTile(
+                                        leading:
+                                            const Icon(Icons.list_alt_rounded),
+                                        title: Text(
+                                          controller.notes[index].title,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: 'SFPReg',
+                                              fontWeight: FontWeight.normal),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      )),
+                )
+              ],
+            ),
           ],
         ),
         backgroundColor: tertiaryColor,

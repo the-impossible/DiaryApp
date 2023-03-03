@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:get/get.dart';
+import 'package:diary/utils/custom_snackBar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class TakeNote extends StatefulWidget {
@@ -25,17 +26,25 @@ class _TakeNoteState extends State<TakeNote> {
 
   Future pickImage() async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
 
       if (pickedFile == null) return;
 
       setState(() {
         image = File(pickedFile.path);
         takeNoteController.image = image;
-        print(takeNoteController.image);
       });
     } on PlatformException catch (e) {
-      print("Failed to Capture image: $e");
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: CustomSnackBar(
+              output: "Failed to Capture image: $e", isSuccess: false),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+      );
     }
   }
 
@@ -265,7 +274,6 @@ class _MoodDropdownMenuState extends State<MoodDropdownMenu> {
         setState(() {
           selectedEmotion = newValue!;
           takeNoteController.selectedEmotion = selectedEmotion;
-          print(takeNoteController.selectedEmotion);
         });
       },
       items: emotions.entries
@@ -297,7 +305,7 @@ PreferredSizeWidget _appBar(BuildContext context, formKey) {
         child: TextButton(
           onPressed: () {
             if (formKey.currentState!.validate()) {}
-            takeNoteController.takeNote();
+            takeNoteController.submitNote();
           },
           child: const Text(
             'Save',

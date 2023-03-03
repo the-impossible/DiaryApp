@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:diary/controllers/notes_controller.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:diary/services/constants.dart';
@@ -215,6 +216,7 @@ class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProfileController profileController = Get.put(ProfileController());
+    NotesController notesController = Get.put(NotesController());
     return Drawer(
       backgroundColor: secondaryColor,
       child: SingleChildScrollView(
@@ -222,7 +224,7 @@ class NavigationDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             buildHeader(context, profileController),
-            buildMenuItems(context),
+            buildMenuItems(context, notesController),
           ],
         ),
       ),
@@ -266,7 +268,9 @@ Widget buildHeader(BuildContext context, dynamic profileController) => Material(
         ),
       ),
     );
-Widget buildMenuItems(BuildContext context) => Container(
+
+Widget buildMenuItems(BuildContext context, dynamic notesController) =>
+    Container(
       padding: const EdgeInsets.all(24),
       child: Wrap(
         runSpacing: 10,
@@ -292,7 +296,7 @@ Widget buildMenuItems(BuildContext context) => Container(
               title: const Text('Notes'),
               onTap: () {
                 Navigator.pop(context);
-                Get.toNamed(Routes.allNotes);
+                notesController.processFetchNotes();
               }),
           ListTile(
             leading: const Icon(Icons.task),

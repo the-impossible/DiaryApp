@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:diary/controllers/profile_controller.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:diary/utils/endpoints.dart';
+import 'package:diary/utils/loading.dart';
 import 'package:get/get.dart';
 import 'package:diary/utils/preferences.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,10 @@ class TakeNoteController extends GetxController {
       return 'Note Content is Required!';
     }
     return null;
+  }
+
+  void submitNote() async {
+    Get.showOverlay(asyncFunction: () => takeNote(), loadingWidget: const Loading());
   }
 
   Future<void> takeNote() async {

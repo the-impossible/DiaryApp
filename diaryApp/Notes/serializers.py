@@ -16,6 +16,19 @@ class NoteSerializers(serializers.ModelSerializer):
         fields = ['id','title', 'mood', 'note', 'user_id', 'pic', 'date_created']
 
 
+class AllNotesSerializers(serializers.ModelSerializer):
+    """_NoteSerializer_
+
+    Args:
+        serializers (_type_): _Serializing the Note model to for API calls_
+    """
+
+    class Meta:
+        """Meta for the NoteSerializer"""
+        model = Notes
+        fields = ['id','title','date_created']
+
+
 class MoodSerializers(serializers.ModelSerializer):
     """_MoodSerializer_
 
