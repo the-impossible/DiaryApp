@@ -1,14 +1,14 @@
-import 'dart:io';
-
 import 'package:diary/models/all_mood.dart';
 import 'package:diary/utils/endpoints.dart';
-import 'package:diary/utils/loading.dart';
 import 'package:diary/utils/preferences.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class MoodController extends GetxController {
   List<AllMoods>? allMood;
+
+  var moods = <AllMoods>[].obs;
+
   Preferences preferences = Preferences();
 
   @override
@@ -21,23 +21,19 @@ class MoodController extends GetxController {
     Map token = await preferences.getToken();
 
     try {
-      var headers = {
-        'Content-Type': 'application/json',
-        'encoding': 'utf-8',
-        'Authorization': 'Bearer ${token['access']}'
-      };
+      var headers = {'Authorization': 'Bearer ${token['access']}'};
 
       var url =
           Uri.parse(APIEndPoints.baseURL + APIEndPoints.authEndPoints.allMoods);
 
-      http.Response response = await http.get(url, headers: headers);
+      var request = http.Request('GET', url);
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
-        allMood = allMoodsFromJson(response.body);
-        // print(response.body);
-      } else {
-        // print(response.body);
-      }
+        moods.value = allMoodsFromJson(await response.stream.bytesToString());
+      } else {}
     } catch (e) {
       String output = "FAILED: $e";
     }

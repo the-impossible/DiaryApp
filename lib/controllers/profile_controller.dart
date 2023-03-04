@@ -7,7 +7,6 @@ import 'package:diary/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
 import 'mood_controller.dart';
 
 class ProfileController extends GetxController {
@@ -42,7 +41,7 @@ class ProfileController extends GetxController {
         isLoading(true);
         Get.to(() => Home());
         Get.put(MoodController());
-        
+
       } else {
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           SnackBar(

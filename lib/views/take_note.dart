@@ -254,11 +254,6 @@ class _MoodDropdownMenuState extends State<MoodDropdownMenu> {
   Widget build(BuildContext context) {
     MoodController moodController = Get.put(MoodController());
 
-    Map<String, String> emotions = {};
-
-    for (var element in moodController.allMood!) {
-      emotions[element.id.toString()] = element.mood;
-    }
     String? selectedEmotion;
 
     return DropdownButtonFormField<String>(
@@ -276,10 +271,10 @@ class _MoodDropdownMenuState extends State<MoodDropdownMenu> {
           takeNoteController.selectedEmotion = selectedEmotion;
         });
       },
-      items: emotions.entries
-          .map((emotion) => DropdownMenuItem<String>(
-                value: emotion.key,
-                child: Text(emotion.value),
+      items: moodController.moods
+          .map((entries) => DropdownMenuItem<String>(
+                value: entries.id.toString(),
+                child: Text(entries.mood),
               ))
           .toList(),
     );
