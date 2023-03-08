@@ -34,7 +34,8 @@ class TakeNoteController extends GetxController {
   }
 
   void submitNote() async {
-    Get.showOverlay(asyncFunction: () => takeNote(), loadingWidget: const Loading());
+    Get.showOverlay(
+        asyncFunction: () => takeNote(), loadingWidget: const Loading());
   }
 
   Future<void> takeNote() async {
@@ -50,6 +51,7 @@ class TakeNoteController extends GetxController {
           Uri.parse(APIEndPoints.baseURL + APIEndPoints.authEndPoints.takeNote);
 
       var request = http.MultipartRequest('POST', url);
+      print("GOTTTTT $selectedEmotion");
       request.fields.addAll({
         'title': titleController.text,
         'note': noteController.text,
@@ -57,7 +59,10 @@ class TakeNoteController extends GetxController {
         'user_id': "${profileController.userProfile?.id}",
       });
 
-      request.files.add(await http.MultipartFile.fromPath('pic', image!.path));
+      if (image?.path != null) {
+        request.files
+            .add(await http.MultipartFile.fromPath('pic', image!.path));
+      }
 
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
@@ -76,6 +81,7 @@ class TakeNoteController extends GetxController {
         Get.toNamed(Routes.home);
         titleController.clear();
         noteController.clear();
+        selectedEmotion = null;
       } else {
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           SnackBar(
@@ -88,9 +94,14 @@ class TakeNoteController extends GetxController {
         );
       }
     } catch (e) {
+      if (selectedEmotion == null) {}
+
       ScaffoldMessenger.of(Get.context!).showSnackBar(
         SnackBar(
-          content: CustomSnackBar(output: '$e', isSuccess: false),
+          content: CustomSnackBar(
+              output:
+                  (selectedEmotion == null) ? 'Please select a mood!' : '$e',
+              isSuccess: false),
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
           elevation: 0,

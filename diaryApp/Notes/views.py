@@ -60,4 +60,14 @@ class EditNoteView(generics.UpdateAPIView):
     queryset = Notes.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
 
+class DeleteNoteView(generics.DestroyAPIView):
+    """This view deletes a note"""
+    serializer_class = NoteSerializers
+    queryset = Notes.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return Response(status=status.HTTP_200_OK)
+
 

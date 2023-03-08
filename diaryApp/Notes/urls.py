@@ -7,6 +7,7 @@ from Notes.views import (
     GetNotesView,
     DetailNoteView,
     EditNoteView,
+    DeleteNoteView,
 )
 
 app_name = "notes"
@@ -17,4 +18,5 @@ urlpatterns = [
     path("get_notes/", GetNotesView.as_view(), name="get_notes"),
     path("detail_note/<str:note_id>", DetailNoteView.as_view(), name="detail_note"),
     path("edit_note/<str:pk>", EditNoteView.as_view(), name="edit_note"),
+    path("delete_note/<str:pk>", DeleteNoteView.as_view(), name="delete_note"),
 ]

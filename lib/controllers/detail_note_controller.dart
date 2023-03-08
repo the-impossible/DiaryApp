@@ -38,6 +38,7 @@ class DetailNoteController extends GetxController {
 
       if (response.statusCode == 200) {
         note = detailNoteFromJson(await response.stream.bytesToString());
+        print("OBJECT: $note");
         if (route == 'details') Get.toNamed(Routes.detailNote);
         if (route == 'edit') Get.toNamed(Routes.editNote);
       } else {

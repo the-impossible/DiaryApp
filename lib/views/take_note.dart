@@ -253,6 +253,7 @@ class _MoodDropdownMenuState extends State<MoodDropdownMenu> {
   @override
   Widget build(BuildContext context) {
     MoodController moodController = Get.put(MoodController());
+    TakeNoteController takeNoteController = Get.put(TakeNoteController());
 
     String? selectedEmotion;
 
@@ -299,8 +300,9 @@ PreferredSizeWidget _appBar(BuildContext context, formKey) {
         padding: const EdgeInsets.only(right: 20),
         child: TextButton(
           onPressed: () {
-            if (formKey.currentState!.validate()) {}
-            takeNoteController.submitNote();
+            if (formKey.currentState!.validate()) {
+              takeNoteController.submitNote();
+            }
           },
           child: const Text(
             'Save',

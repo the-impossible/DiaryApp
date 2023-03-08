@@ -8,7 +8,7 @@ class DetailNote {
     required this.mood,
     required this.note,
     required this.dateCreated,
-    required this.pic,
+    this.pic,
   });
 
   int id;
@@ -16,7 +16,7 @@ class DetailNote {
   String mood;
   String note;
   DateTime dateCreated;
-  Uint8List pic;
+  dynamic pic;
 
   factory DetailNote.fromJson(Map<String, dynamic> json) => DetailNote(
         id: json["id"],
@@ -24,7 +24,7 @@ class DetailNote {
         mood: json["mood"],
         note: json["note"],
         dateCreated: DateTime.parse(json["date_created"]),
-        pic: base64Decode(json["pic"]),
+        pic: (json["pic"] != null) ? base64Decode(json["pic"]) : json["pic"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,7 +33,7 @@ class DetailNote {
         "mood": mood,
         "note": note,
         "date_created": dateCreated.toIso8601String(),
-        "pic": base64Encode(pic),
+        "pic": (pic != null) ? base64Encode(pic) : pic,
       };
 }
 

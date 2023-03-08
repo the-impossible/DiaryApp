@@ -13,7 +13,6 @@ class NotesController extends GetxController {
   void processFetchNotes() async {
     Get.showOverlay(
         asyncFunction: () => fetchNotes(), loadingWidget: const Loading());
-    print("object: Got here");
     Get.toNamed(Routes.allNotes);
   }
 

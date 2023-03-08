@@ -12,4 +12,5 @@ class AuthEndPoints {
   final String allNotes = 'notes/get_notes/';
   final String detailNote = 'notes/detail_note/';
   final String editNote = 'notes/edit_note/';
+  final String deleteNote = 'notes/delete_note/';
 }

@@ -46,10 +46,11 @@ class DetailNotesSerializers(serializers.ModelSerializer):
 
     def get_image(self, note:Notes):
         """IMAGE"""
-        file = default_storage.open(note.pic.name, 'rb')
-        data = file.read()
-        file.close()
-        return base64.b64encode(data)
+        if note.pic.name:
+            file = default_storage.open(note.pic.name, 'rb')
+            data = file.read()
+            file.close()
+            return base64.b64encode(data)
 
 
 class MoodSerializers(serializers.ModelSerializer):

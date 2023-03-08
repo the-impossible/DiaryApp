@@ -120,18 +120,31 @@ class _DetailNoteState extends State<DetailNote> {
                                 return AlertDialog(
                                   contentPadding: EdgeInsets.zero,
                                   content: SizedBox(
-                                    child: Image.memory(
-                                      detailNoteController.note!.pic,
-                                      fit: BoxFit.cover,
-                                    ),
+                                    child:
+                                        (detailNoteController.note!.pic != null)
+                                            ? Image.memory(
+                                                detailNoteController.note!.pic,
+                                                fit: BoxFit.contain,
+                                              )
+                                            : Image.asset(
+                                                "assets/default.jpg",
+                                                fit: BoxFit.contain,
+                                              ),
                                   ),
                                 );
                               },
                             ),
-                            child: Image.memory(
-                              detailNoteController.note!.pic,
-                              fit: BoxFit.contain,
-                            ),
+                            child: (detailNoteController.note!.pic != null)
+                                ? Image.memory(
+                                    detailNoteController.note!.pic,
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.asset(
+                                    "assets/default.jpg",
+                                    fit: BoxFit.contain,
+                                    height: size.height * .2,
+                                    width: size.width * .3,
+                                  ),
                           ),
                         ),
                       ),

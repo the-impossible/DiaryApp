@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:diary/controllers/delete_note_controller.dart';
 import 'package:diary/controllers/detail_note_controller.dart';
 import 'package:diary/controllers/notes_controller.dart';
 import 'package:diary/routes/routes.dart';
@@ -11,6 +12,7 @@ class AllNotes extends StatelessWidget {
   AllNotes({super.key});
 
   DetailNoteController detailNoteController = Get.put(DetailNoteController());
+  DeleteNoteController deleteNoteController = Get.put(DeleteNoteController());
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +128,11 @@ class AllNotes extends StatelessWidget {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
+                                                  deleteNoteController.note_id =
+                                                      controller.notes[index].id
+                                                          .toString();
+                                                  deleteNoteController
+                                                      .processDeleteNote();
                                                   print('Deleted!');
                                                 },
                                                 child: const Icon(
