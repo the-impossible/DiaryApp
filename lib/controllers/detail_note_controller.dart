@@ -1,4 +1,5 @@
 import 'package:diary/models/all_notes.dart';
+import 'package:diary/models/detail_note.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:diary/utils/endpoints.dart';
 import 'package:diary/utils/loading.dart';
@@ -6,18 +7,18 @@ import 'package:diary/utils/preferences.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class NotesController extends GetxController {
+class DetailNoteController extends GetxController {
   Preferences preferences = Preferences();
-  var notes = <AllNotes>[].obs;
+  // var note = <DetailNote>{}.obs;
+  DetailNote? note;
+  String? note_id;
 
-  void processFetchNotes() async {
+  void processFetchNote(String route) async {
     Get.showOverlay(
-        asyncFunction: () => fetchNotes(), loadingWidget: const Loading());
-    print("object: Got here");
-    Get.toNamed(Routes.allNotes);
+        asyncFunction: () => fetchNote(route), loadingWidget: const Loading());
   }
 
-  Future<void> fetchNotes() async {
+  Future<void> fetchNote(String route) async {
     Map token = await preferences.getToken();
 
     try {
@@ -26,8 +27,9 @@ class NotesController extends GetxController {
         'Authorization': 'Bearer ${token['access']}'
       };
 
-      var url =
-          Uri.parse(APIEndPoints.baseURL + APIEndPoints.authEndPoints.allNotes);
+      var url = Uri.parse(APIEndPoints.baseURL +
+          APIEndPoints.authEndPoints.detailNote +
+          note_id!);
 
       var request = http.Request('GET', url);
       request.headers.addAll(headers);
@@ -35,7 +37,9 @@ class NotesController extends GetxController {
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
-        notes.value = allNotesFromJson(await response.stream.bytesToString());
+        note = detailNoteFromJson(await response.stream.bytesToString());
+        if (route == 'details') Get.toNamed(Routes.detailNote);
+        if (route == 'edit') Get.toNamed(Routes.editNote);
       } else {
         print("FaILED: ${response.reasonPhrase}");
       }

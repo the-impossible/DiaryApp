@@ -1,12 +1,16 @@
 import 'dart:ui' as ui;
+import 'package:diary/controllers/detail_note_controller.dart';
 import 'package:diary/controllers/notes_controller.dart';
+import 'package:diary/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:get/get.dart';
 
 class AllNotes extends StatelessWidget {
-  const AllNotes({super.key});
+  AllNotes({super.key});
+
+  DetailNoteController detailNoteController = Get.put(DetailNoteController());
 
   @override
   Widget build(BuildContext context) {
@@ -14,55 +18,58 @@ class AllNotes extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         // appBar: _appBar(context),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Builder(builder: (context) {
-              return IconButton(
-                onPressed: () => Get.back(),
-                icon: const Icon(
-                  Icons.arrow_back,
-                  size: 28,
-                  color: primaryColor,
-                ),
-              );
-            }),
-            Stack(
-              children: [
-                CustomPaint(
-                  size: Size(size.width, (340 * 1.7777777777777777).toDouble()),
-                  painter: MyShape(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/note.svg',
-                      fit: BoxFit.contain,
-                      height: 60,
-                    ),
-                    const Text(
-                      'Notes',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: primaryColor,
-                        fontFamily: 'SFPBold',
-                        fontWeight: FontWeight.bold,
+        body: SizedBox(
+          height: size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Builder(builder: (context) {
+                return IconButton(
+                  onPressed: () => Get.back(),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    size: 28,
+                    color: primaryColor,
+                  ),
+                );
+              }),
+              Stack(
+                children: [
+                  CustomPaint(
+                    size:
+                        Size(size.width, (340 * 1.7777777777777777).toDouble()),
+                    painter: MyShape(),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/note.svg',
+                        fit: BoxFit.contain,
+                        height: 60,
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.search,
-                        color: primaryColor,
-                        size: 30,
+                      const Text(
+                        'Notes',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: primaryColor,
+                          fontFamily: 'SFPBold',
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                Positioned(
-                  top: size.height * .12,
-                  child: SizedBox(
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.search,
+                          color: primaryColor,
+                          size: 30,
+                        ),
+                      )
+                    ],
+                  ),
+                  Positioned(
+                    top: size.height * .12,
+                    child: SizedBox(
                       width: size.width,
                       height: size.height,
                       child: Column(
@@ -74,24 +81,59 @@ class AllNotes extends StatelessWidget {
                                 return ListView.builder(
                                   itemCount: controller.notes.length,
                                   itemBuilder: (context, index) {
-                                    return Card(
-                                      margin: const EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
-                                          left: 20,
-                                          right: 20),
-                                      elevation: 3,
-                                      color: tertiaryColor,
-                                      shadowColor: primaryColor,
-                                      child: ListTile(
-                                        leading:
-                                            const Icon(Icons.list_alt_rounded),
-                                        title: Text(
-                                          controller.notes[index].title,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontFamily: 'SFPReg',
-                                              fontWeight: FontWeight.normal),
+                                    return InkWell(
+                                      onTap: () async {
+                                        detailNoteController.note_id =
+                                            controller.notes[index].id
+                                                .toString();
+                                        detailNoteController
+                                            .processFetchNote('details');
+                                      },
+                                      child: Card(
+                                        margin: const EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 20,
+                                            right: 20),
+                                        elevation: 3,
+                                        color: tertiaryColor,
+                                        shadowColor: primaryColor,
+                                        child: ListTile(
+                                          leading: Text(controller
+                                              .notes[index].mood
+                                              .split(" ")
+                                              .last),
+                                          title: Text(
+                                            controller.notes[index].title,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontFamily: 'SFPReg',
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          trailing: Wrap(
+                                            spacing: 10,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  detailNoteController.note_id =
+                                                      controller.notes[index].id
+                                                          .toString();
+                                                  detailNoteController
+                                                      .processFetchNote('edit');
+                                                },
+                                                child: const Icon(Icons.edit,
+                                                    color: Colors.green),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  print('Deleted!');
+                                                },
+                                                child: const Icon(
+                                                    Icons.delete_forever,
+                                                    color: Colors.red),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );
@@ -101,11 +143,13 @@ class AllNotes extends StatelessWidget {
                             ),
                           ),
                         ],
-                      )),
-                )
-              ],
-            ),
-          ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
         backgroundColor: tertiaryColor,
       ),

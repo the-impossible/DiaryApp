@@ -6,13 +6,13 @@ name = "pypi"
 [packages]
 django = "*"
 djangorestframework = "*"
-pylint-django = "*"
-pylint = "*"
 django-cors-headers = "*"
 markdown = "*"
 pillow = "*"
 djangorestframework-simplejwt = "*"
 python-decouple = "*"
+pylint = "*"
+pylint-django = "*"
 
 [dev-packages]
 

@@ -1,4 +1,6 @@
 import 'package:diary/views/all_notes.dart';
+import 'package:diary/views/detail_note.dart';
+import 'package:diary/views/edit_note.dart';
 import 'package:diary/views/home.dart';
 import 'package:diary/views/sign_in.dart';
 import 'package:diary/views/sign_up.dart';
@@ -13,6 +15,8 @@ class Routes {
   static String home = '/home';
   static String takeNote = '/takeNote';
   static String allNotes = '/allNotes';
+  static String detailNote = '/detailNote';
+  static String editNote = '/editNote';
 }
 
 final getPages = [
@@ -38,6 +42,14 @@ final getPages = [
   ),
   GetPage(
     name: Routes.allNotes,
-    page: () => const AllNotes(),
+    page: () => AllNotes(),
+  ),
+  GetPage(
+    name: Routes.detailNote,
+    page: () => const DetailNote(),
+  ),
+  GetPage(
+    name: Routes.editNote,
+    page: () => const EditNote(),
   ),
 ];

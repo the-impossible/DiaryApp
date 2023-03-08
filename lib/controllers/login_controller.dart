@@ -42,6 +42,7 @@ class LoginController extends GetxController {
       var headers = {'Content-Type': 'application/json'};
       var url =
           Uri.parse(APIEndPoints.baseURL + APIEndPoints.authEndPoints.signIn);
+
       Map body = {
         'username': usernameController.text,
         'password': passwordController.text

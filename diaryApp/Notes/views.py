@@ -8,6 +8,7 @@ from Notes.serializers import (
     NoteSerializers,
     MoodSerializers,
     AllNotesSerializers,
+    DetailNotesSerializers,
 )
 
 from Notes.models import (
@@ -43,4 +44,20 @@ class GetNotesView(generics.ListAPIView):
 
     def get_queryset(self):
         return Notes.objects.filter(user_id=self.request.user).order_by('-date_created')
+
+class DetailNoteView(generics.RetrieveAPIView):
+    """This view returns a user"""
+    serializer_class = DetailNotesSerializers
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        print(Notes.objects.get(pk=self.kwargs.get('note_id')))
+        return Notes.objects.get(pk=self.kwargs.get('note_id'))
+
+class EditNoteView(generics.UpdateAPIView):
+    """This view returns a user"""
+    serializer_class = NoteSerializers
+    queryset = Notes.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+
 
