@@ -8,33 +8,31 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:get/get.dart';
 
+List<String> searchResults = [];
+
 class AllNotes extends StatelessWidget {
   AllNotes({super.key});
 
   DetailNoteController detailNoteController = Get.put(DetailNoteController());
   DeleteNoteController deleteNoteController = Get.put(DeleteNoteController());
+  NotesController notesController = Get.put(NotesController());
 
   @override
   Widget build(BuildContext context) {
+    searchResults = [];
+    notesController.notes.forEach((element) {
+      searchResults.add(element.title);
+    });
+
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        // appBar: _appBar(context),
+        appBar: _appBar(context),
         body: SizedBox(
           height: size.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Builder(builder: (context) {
-                return IconButton(
-                  onPressed: () => Get.back(),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 28,
-                    color: primaryColor,
-                  ),
-                );
-              }),
               Stack(
                 children: [
                   CustomPaint(
@@ -43,7 +41,7 @@ class AllNotes extends StatelessWidget {
                     painter: MyShape(),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
                         'assets/note.svg',
@@ -59,14 +57,6 @@ class AllNotes extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.search,
-                          color: primaryColor,
-                          size: 30,
-                        ),
-                      )
                     ],
                   ),
                   Positioned(
@@ -176,7 +166,87 @@ PreferredSizeWidget _appBar(BuildContext context) {
     ),
     backgroundColor: tertiaryColor,
     elevation: 0,
+    actions: [
+      Padding(
+        padding: const EdgeInsets.only(right: 10.0),
+        child: IconButton(
+          onPressed: () {
+            showSearch(context: context, delegate: MySearchDelegate());
+          },
+          icon: const Icon(
+            Icons.search,
+            color: primaryColor,
+            size: 30,
+          ),
+        ),
+      )
+    ],
   );
+}
+
+class MySearchDelegate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            } else {
+              query = '';
+            }
+          },
+          icon: const Icon(
+            Icons.clear,
+            color: primaryColor,
+            size: 30,
+          ),
+        )
+      ];
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () => close(context, null),
+        icon: const Icon(
+          Icons.arrow_back,
+          color: primaryColor,
+          size: 30,
+        ),
+      );
+
+  @override
+  Widget buildResults(BuildContext context) => SizedBox();
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    DetailNoteController detailNoteController = Get.put(DetailNoteController());
+    NotesController notesController = Get.put(NotesController());
+
+    List<String> suggestions = searchResults.where((element) {
+      final result = element.toLowerCase();
+      final input = query.toLowerCase();
+      return result.contains(input);
+    }).toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        final suggestion = suggestions[index];
+        return ListTile(
+          title: Text(suggestion),
+          onTap: () {
+            notesController.notes.forEach((element) {
+              if (element.title == suggestion) {
+                detailNoteController.note_id = element.id.toString();
+              }
+            });
+            query = suggestion;
+            detailNoteController.processFetchNote('details');
+            close(context, null);
+          },
+        );
+      },
+    );
+  }
 }
 
 class MyShape extends CustomPainter {
