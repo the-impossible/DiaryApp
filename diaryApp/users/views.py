@@ -2,12 +2,17 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import permissions
+from django.core.files.storage import default_storage
 
 # MyApp Import
 from users.serializers import (
     UserSerializer,
+    EditUserSerializer,
 )
 
+from users.models import (
+    User,
+)
 
 # Create your views here.
 class RegisterView(generics.CreateAPIView):
@@ -30,3 +35,8 @@ class UserView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+class UpdateUserView(generics.UpdateAPIView):
+    """This view returns a user"""
+    serializer_class = EditUserSerializer
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)

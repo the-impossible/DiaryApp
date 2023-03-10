@@ -82,8 +82,14 @@ class Home extends StatelessWidget {
                               CircleAvatar(
                                 maxRadius: 20,
                                 minRadius: 20,
-                                child: Image.memory(
-                                    profileController.userProfile!.image),
+                                child: ClipOval(
+                                  child: Image.memory(
+                                    height: 40,
+                                    width: 40,
+                                    fit: BoxFit.fitWidth,
+                                    profileController.userProfile!.image,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -235,7 +241,9 @@ class NavigationDrawer extends StatelessWidget {
 Widget buildHeader(BuildContext context, dynamic profileController) => Material(
       color: blueColor,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Get.toNamed(Routes.editProfile);
+        },
         child: Container(
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height * .05,
@@ -245,7 +253,14 @@ Widget buildHeader(BuildContext context, dynamic profileController) => Material(
               CircleAvatar(
                 maxRadius: 50,
                 minRadius: 50,
-                child: Image.memory(profileController.userProfile!.image),
+                child: ClipOval(
+                  child: Image.memory(
+                    profileController.userProfile!.image,
+                    height: 160,
+                    width: 160,
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
               ),
               const SizedBox(height: 12),
               Text(
@@ -263,6 +278,15 @@ Widget buildHeader(BuildContext context, dynamic profileController) => Material(
                   letterSpacing: 1,
                 ),
               ),
+              (profileController.userProfile.phone != null)
+                  ? Text(
+                      "${profileController.userProfile.phone}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        letterSpacing: 1,
+                      ),
+                    )
+                  : const Text(""),
             ],
           ),
         ),
@@ -298,11 +322,11 @@ Widget buildMenuItems(BuildContext context, dynamic notesController) =>
                 Navigator.pop(context);
                 notesController.processFetchNotes();
               }),
-          ListTile(
-            leading: const Icon(Icons.task),
-            title: const Text('Tasks'),
-            onTap: () {},
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.task),
+          //   title: const Text('Tasks'),
+          //   onTap: () {},
+          // ),
           const Divider(
             color: Colors.black54,
             thickness: 1,
