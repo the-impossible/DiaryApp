@@ -13,3 +13,5 @@ String month = DateFormat.MMMM().format(now).toString();
 String year = DateFormat.y().format(now).toString().toLowerCase();
 // FORMS
 bool passToggle = true;
+// DROPDOWN
+List<String> options = ['Profile', 'Logout'];

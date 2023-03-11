@@ -75,3 +75,42 @@ class EditUserSerializer(serializers.ModelSerializer):
         data = file.read()
         file.close()
         return base64.b64encode(data)
+
+class ChangePassSerializer(serializers.ModelSerializer):
+
+    """Changes the User Password"""
+
+    password0 = serializers.CharField(
+        required=True,
+        write_only=True,
+    )
+    password1 = serializers.CharField(
+        required=True,
+        write_only=True,
+    )
+    password2 = serializers.CharField(
+        required=True,
+        write_only=True,
+    )
+
+    def validate(self, attrs):
+        if attrs['password1'] != attrs['password2']:
+            raise serializers.ValidationError(({"password":"Password fields didn't match!"}))
+
+        return attrs
+
+    def validate_password0(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError({"password0":"Old password is incorrect!"})
+        return value
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password1'])
+        instance.save()
+        return instance
+
+    class Meta:
+        """Meta for the UserSerializer"""
+        model = User
+        fields = ['password0','password1','password2']

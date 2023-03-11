@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:diary/controllers/edit_profile_controller%20.dart';
 import 'package:diary/controllers/profile_controller.dart';
 import 'package:diary/controllers/registration_controller.dart';
+import 'package:diary/routes/routes.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/utils/custom_snackBar.dart';
 import 'package:flutter/material.dart';
@@ -87,8 +88,15 @@ class _EditProfileState extends State<EditProfile> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20.0, top: 20),
+                    IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        size: 28,
+                        color: primaryColor,
+                      ),
+                    ),
+                    const Center(
                       child: Text(
                         "Update Profile",
                         style: TextStyle(
@@ -229,7 +237,8 @@ class _EditProfileState extends State<EditProfile> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 20.0),
                                   child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        Get.toNamed(Routes.changePassword),
                                     child: const Text(
                                       'Change Password',
                                       style: TextStyle(

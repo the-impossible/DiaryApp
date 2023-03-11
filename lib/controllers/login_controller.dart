@@ -58,7 +58,8 @@ class LoginController extends GetxController {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('refresh', tokenController.refresh);
         await prefs.setString('access', tokenController.access);
-        Get.put(ProfileController());
+        ProfileController profileController = Get.put(ProfileController());
+        profileController.onInit();
         usernameController.clear();
         passwordController.clear();
       } else {

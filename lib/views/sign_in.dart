@@ -6,6 +6,7 @@ import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/controllers/login_controller.dart';
 import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -17,77 +18,158 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   LoginController loginController = Get.put(LoginController());
+  DateTime timeBackPressed = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: tertiaryColor,
-        body: SingleChildScrollView(
-          child: Container(
-            color: tertiaryColor,
-            child: Stack(
-              children: [
-                CustomPaint(
-                  size: Size(size.width, (340 * 1.7777777777777777).toDouble()),
-                  painter: MyShape(),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        left: 35,
-                        top: 10,
-                      ),
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.0,
-                          fontSize: 30,
-                          fontFamily: 'Pacifico-Regular',
+      child: WillPopScope(
+        onWillPop: () async {
+          final difference = DateTime.now().difference(timeBackPressed);
+          final isExitWarning = difference >= const Duration(seconds: 2);
+          timeBackPressed = DateTime.now();
+
+          if (isExitWarning) {
+            const message = 'Press back again to exit';
+            Fluttertoast.showToast(msg: message, fontSize: 18);
+            return false;
+          } else {
+            Fluttertoast.cancel();
+            return true;
+          }
+        },
+        child: Scaffold(
+          backgroundColor: tertiaryColor,
+          body: SingleChildScrollView(
+            child: Container(
+              color: tertiaryColor,
+              child: Stack(
+                children: [
+                  CustomPaint(
+                    size:
+                        Size(size.width, (340 * 1.7777777777777777).toDouble()),
+                    painter: MyShape(),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(
+                          left: 35,
+                          top: 10,
+                        ),
+                        child: Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.0,
+                            fontSize: 30,
+                            fontFamily: 'Pacifico-Regular',
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          SignUpForm(
-                            text: 'Username',
-                            icon: Icons.manage_accounts,
-                            isSecured: false,
-                            formController: loginController.usernameController,
-                            isVisible: false,
-                            validator: loginController.validateUsername,
-                          ),
-                          SignUpForm(
-                            text: 'Password',
-                            icon: Icons.password,
-                            isSecured: true,
-                            formController: loginController.passwordController,
-                            isVisible: true,
-                            validator: loginController.validatePassword,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 30),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  onPressed: () {},
+                      const SizedBox(
+                        height: 100,
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            SignUpForm(
+                              text: 'Username',
+                              icon: Icons.manage_accounts,
+                              isSecured: false,
+                              formController:
+                                  loginController.usernameController,
+                              isVisible: false,
+                              validator: loginController.validateUsername,
+                            ),
+                            SignUpForm(
+                              text: 'Password',
+                              icon: Icons.password,
+                              isSecured: true,
+                              formController:
+                                  loginController.passwordController,
+                              isVisible: true,
+                              validator: loginController.validatePassword,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 30),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'Forget password?',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        decoration: TextDecoration.underline,
+                                        fontFamily: 'SFPReg',
+                                        color: primaryColor,
+                                        letterSpacing: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 30,
+                                right: 30,
+                                top: 10,
+                              ),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 60,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      loginController.verifyLogin();
+                                    }
+                                  },
                                   child: const Text(
-                                    'Forget password?',
+                                    'Sign In',
+                                    style: TextStyle(
+                                      fontFamily: 'SFPBold',
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Don't have an account?",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'SFPReg',
+                                    color: primaryColor,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Get.offAndToNamed(Routes.signUp);
+                                  },
+                                  child: const Text(
+                                    'Sign Up',
                                     style: TextStyle(
                                       fontSize: 15,
                                       decoration: TextDecoration.underline,
                                       fontFamily: 'SFPReg',
+                                      fontWeight: FontWeight.bold,
                                       color: primaryColor,
                                       letterSpacing: 1,
                                     ),
@@ -95,74 +177,13 @@ class _SignInState extends State<SignIn> {
                                 ),
                               ],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 30,
-                              right: 30,
-                              top: 10,
-                            ),
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: 60,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    loginController.verifyLogin();
-                                  }
-                                },
-                                child: const Text(
-                                  'Sign In',
-                                  style: TextStyle(
-                                    fontFamily: 'SFPBold',
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Don't have an account?",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'SFPReg',
-                                  color: primaryColor,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Get.offAndToNamed(Routes.signUp);
-                                },
-                                child: const Text(
-                                  'Sign Up',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    decoration: TextDecoration.underline,
-                                    fontFamily: 'SFPReg',
-                                    fontWeight: FontWeight.bold,
-                                    color: primaryColor,
-                                    letterSpacing: 1,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

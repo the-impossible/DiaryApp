@@ -1,4 +1,5 @@
 import 'package:diary/views/all_notes.dart';
+import 'package:diary/views/change_password.dart';
 import 'package:diary/views/detail_note.dart';
 import 'package:diary/views/editProfile.dart';
 import 'package:diary/views/edit_note.dart';
@@ -19,6 +20,7 @@ class Routes {
   static String detailNote = '/detailNote';
   static String editNote = '/editNote';
   static String editProfile = '/editProfile';
+  static String changePassword = '/changePassword';
 }
 
 final getPages = [
@@ -57,5 +59,9 @@ final getPages = [
   GetPage(
     name: Routes.editProfile,
     page: () => EditProfile(),
+  ),
+  GetPage(
+    name: Routes.changePassword,
+    page: () => const ChangePassword(),
   ),
 ];

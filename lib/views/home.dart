@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:diary/controllers/logout_controller.dart';
 import 'package:diary/controllers/notes_controller.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +7,13 @@ import 'package:diary/services/constants.dart';
 import 'package:diary/controllers/profile_controller.dart';
 import 'package:diary/services/home_decor.dart';
 import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
 
   ProfileController profileController = Get.put(ProfileController());
-
+  DateTime timeBackPressed = DateTime.now();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -83,11 +85,15 @@ class Home extends StatelessWidget {
                                 maxRadius: 20,
                                 minRadius: 20,
                                 child: ClipOval(
-                                  child: Image.memory(
-                                    height: 40,
-                                    width: 40,
-                                    fit: BoxFit.fitWidth,
-                                    profileController.userProfile!.image,
+                                  child: InkWell(
+                                    onTap: () =>
+                                        Get.toNamed(Routes.editProfile),
+                                    child: Image.memory(
+                                      height: 40,
+                                      width: 40,
+                                      fit: BoxFit.fitWidth,
+                                      profileController.userProfile!.image,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -177,7 +183,7 @@ class Home extends StatelessWidget {
                                   HomeDecor(
                                     height: .3,
                                     constraints: constraints,
-                                    title: 'Plan for the day',
+                                    title: 'Manage Notes',
                                     svg: 'assets/tasks.svg',
                                   ),
                                   const SizedBox(height: 25),
@@ -197,7 +203,7 @@ class Home extends StatelessWidget {
                                   HomeDecor(
                                     height: .65,
                                     constraints: constraints,
-                                    title: 'Plan for the day',
+                                    title: 'Update Profile',
                                     svg: 'assets/reminder.svg',
                                   ),
                                 ],
@@ -322,11 +328,6 @@ Widget buildMenuItems(BuildContext context, dynamic notesController) =>
                 Navigator.pop(context);
                 notesController.processFetchNotes();
               }),
-          // ListTile(
-          //   leading: const Icon(Icons.task),
-          //   title: const Text('Tasks'),
-          //   onTap: () {},
-          // ),
           const Divider(
             color: Colors.black54,
             thickness: 1,
@@ -334,7 +335,35 @@ Widget buildMenuItems(BuildContext context, dynamic notesController) =>
           ListTile(
             leading: const Icon(Icons.login_rounded),
             title: const Text('Logout'),
-            onTap: () {},
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Log out'),
+                      content: const Text('Are you sure you want to log out?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            LogoutController logoutController =
+                                Get.put(LogoutController());
+
+                            logoutController.signOut();
+                          },
+                          child: const Text('Logout'),
+                        ),
+                      ],
+                    );
+                  });
+            },
           ),
         ],
       ),

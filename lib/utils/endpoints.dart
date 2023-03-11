@@ -4,10 +4,14 @@ class APIEndPoints {
 }
 
 class AuthEndPoints {
-  final String signUp = 'users/register/';
   final String signIn = 'auth/login/';
+  final String signOut = 'auth/logout/';
+
+  final String signUp = 'users/register/';
   final String profile = 'users/user/';
   final String editUser = 'users/updateUser/';
+  final String changePassword = 'users/change_password/';
+
   final String allMoods = 'notes/get_moods/';
   final String takeNote = 'notes/create_note/';
   final String allNotes = 'notes/get_notes/';

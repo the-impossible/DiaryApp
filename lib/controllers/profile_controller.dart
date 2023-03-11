@@ -1,4 +1,5 @@
 import 'package:diary/models/user_profile.dart';
+import 'package:diary/routes/routes.dart';
 import 'package:diary/utils/endpoints.dart';
 import 'package:diary/utils/loading.dart';
 import 'package:diary/utils/preferences.dart';
@@ -39,9 +40,9 @@ class ProfileController extends GetxController {
         userProfile = userProfileFromJson(response.body);
 
         isLoading(true);
-        Get.to(() => Home());
-        Get.put(MoodController());
+        Get.offNamed(Routes.home);
 
+        Get.put(MoodController());
       } else {
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           SnackBar(

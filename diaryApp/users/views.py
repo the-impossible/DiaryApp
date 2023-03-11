@@ -8,6 +8,7 @@ from django.core.files.storage import default_storage
 from users.serializers import (
     UserSerializer,
     EditUserSerializer,
+    ChangePassSerializer,
 )
 
 from users.models import (
@@ -38,5 +39,11 @@ class UserView(generics.RetrieveAPIView):
 class UpdateUserView(generics.UpdateAPIView):
     """This view returns a user"""
     serializer_class = EditUserSerializer
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+
+class ChangePasswordView(generics.UpdateAPIView):
+    """This view updates the user password"""
+    serializer_class = ChangePassSerializer
     queryset = User.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
