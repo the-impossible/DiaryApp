@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:diary/controllers/detail_note_controller.dart';
 import 'package:diary/controllers/mood_controller.dart';
-import 'package:diary/controllers/take_note_controller.dart';
 import 'package:diary/controllers/edit_note_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -182,8 +181,8 @@ class _EditNoteState extends State<EditNote> {
                         ),
                         child: Column(
                           children: [
-                            Row(
-                              children: const [
+                            const Row(
+                              children: [
                                 Text(
                                   'Current mood?',
                                   style: TextStyle(
@@ -276,11 +275,11 @@ class _MoodDropdownMenuState extends State<MoodDropdownMenu> {
     EditNoteController editNoteController = Get.put(EditNoteController());
 
     String? selectedEmotion;
-    moodController.moods.forEach((element) {
+    for (var element in moodController.moods) {
       if (element.mood == detailNoteController.note!.mood) {
         selectedEmotion = element.id.toString();
       }
-    });
+    }
     editNoteController.selectedEmotion = selectedEmotion;
 
     return DropdownButtonFormField<String>(

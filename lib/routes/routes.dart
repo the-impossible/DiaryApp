@@ -42,7 +42,7 @@ final getPages = [
   ),
   GetPage(
     name: Routes.takeNote,
-    page: () => TakeNote(),
+    page: () => const TakeNote(),
   ),
   GetPage(
     name: Routes.allNotes,
@@ -58,7 +58,7 @@ final getPages = [
   ),
   GetPage(
     name: Routes.editProfile,
-    page: () => EditProfile(),
+    page: () => const EditProfile(),
   ),
   GetPage(
     name: Routes.changePassword,

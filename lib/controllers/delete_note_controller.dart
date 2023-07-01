@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:diary/controllers/notes_controller.dart';
-import 'package:diary/controllers/profile_controller.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:diary/utils/endpoints.dart';
 import 'package:diary/utils/loading.dart';

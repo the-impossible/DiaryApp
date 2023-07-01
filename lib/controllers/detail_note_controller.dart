@@ -1,4 +1,3 @@
-import 'package:diary/models/all_notes.dart';
 import 'package:diary/models/detail_note.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:diary/utils/endpoints.dart';

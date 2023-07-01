@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:diary/controllers/edit_profile_controller%20.dart';
 import 'package:diary/controllers/profile_controller.dart';
-import 'package:diary/controllers/registration_controller.dart';
 import 'package:diary/routes/routes.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/utils/custom_snackBar.dart';
@@ -13,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile({super.key});
+  const EditProfile({super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -211,7 +210,7 @@ class _EditProfileState extends State<EditProfile> {
                                 height: 60,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    primary: primaryColor,
+                                    backgroundColor: primaryColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),

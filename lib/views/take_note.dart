@@ -11,7 +11,7 @@ import 'package:diary/utils/custom_snackBar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class TakeNote extends StatefulWidget {
-  TakeNote({super.key});
+  const TakeNote({super.key});
 
   @override
   State<TakeNote> createState() => _TakeNoteState();
@@ -170,8 +170,8 @@ class _TakeNoteState extends State<TakeNote> {
                         ),
                         child: Column(
                           children: [
-                            Row(
-                              children: const [
+                            const Row(
+                              children: [
                                 Text(
                                   'Current mood?',
                                   style: TextStyle(

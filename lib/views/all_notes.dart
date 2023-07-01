@@ -2,7 +2,6 @@ import 'dart:ui' as ui;
 import 'package:diary/controllers/delete_note_controller.dart';
 import 'package:diary/controllers/detail_note_controller.dart';
 import 'package:diary/controllers/notes_controller.dart';
-import 'package:diary/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
@@ -20,9 +19,9 @@ class AllNotes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     searchResults = [];
-    notesController.notes.forEach((element) {
+    for (var element in notesController.notes) {
       searchResults.add(element.title);
-    });
+    }
 
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -214,7 +213,7 @@ class MySearchDelegate extends SearchDelegate {
       );
 
   @override
-  Widget buildResults(BuildContext context) => SizedBox();
+  Widget buildResults(BuildContext context) => const SizedBox();
 
   @override
   Widget buildSuggestions(BuildContext context) {
@@ -234,11 +233,11 @@ class MySearchDelegate extends SearchDelegate {
         return ListTile(
           title: Text(suggestion),
           onTap: () {
-            notesController.notes.forEach((element) {
+            for (var element in notesController.notes) {
               if (element.title == suggestion) {
                 detailNoteController.note_id = element.id.toString();
               }
-            });
+            }
             query = suggestion;
             detailNoteController.processFetchNote('details');
             close(context, null);

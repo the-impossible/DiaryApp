@@ -4,7 +4,6 @@ import 'package:diary/utils/endpoints.dart';
 import 'package:diary/utils/loading.dart';
 import 'package:diary/utils/preferences.dart';
 import 'package:diary/utils/custom_snackBar.dart';
-import 'package:diary/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;

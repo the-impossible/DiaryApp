@@ -7,7 +7,6 @@ import 'package:diary/services/constants.dart';
 import 'package:diary/controllers/profile_controller.dart';
 import 'package:diary/services/home_decor.dart';
 import 'package:get/get.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -139,15 +138,15 @@ class Home extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
+                const Padding(
+                  padding: EdgeInsets.only(
                     left: 30,
                     top: 30,
                     right: 30,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "How do you feel?",
                         style: TextStyle(

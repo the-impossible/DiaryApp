@@ -3,9 +3,7 @@ import 'package:diary/views/sign_in.dart';
 import 'package:diary/utils/endpoints.dart';
 import 'package:diary/utils/custom_snackBar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class RegistrationController extends GetxController {

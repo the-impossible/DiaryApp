@@ -1,8 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:diary/routes/routes.dart';
-import 'package:diary/views/sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diary/services/constants.dart';
 import 'package:diary/services/signup_form.dart';
 import 'package:diary/controllers/registration_controller.dart';
@@ -39,10 +37,25 @@ class _SignUpState extends State<SignUp> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          'Deary',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.0,
+                            fontSize: 35,
+                            fontFamily: 'Pacifico-Regular',
+                          ),
+                        ),
+                      ),
+                    ),
                     const Padding(
                       padding: EdgeInsets.only(
                         left: 35,
-                        top: 10,
+                        top: 25,
                       ),
                       child: Text(
                         'Sign Up',
@@ -56,7 +69,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     const SizedBox(
-                      height: 100,
+                      height: 30,
                     ),
                     Form(
                       key: _formKey,
@@ -109,7 +122,7 @@ class _SignUpState extends State<SignUp> {
                               height: 60,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: primaryColor,
+                                  backgroundColor: primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
