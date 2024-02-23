@@ -7,6 +7,7 @@ import 'package:diary/services/constants.dart';
 import 'package:diary/controllers/profile_controller.dart';
 import 'package:diary/services/home_decor.dart';
 import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -88,10 +89,10 @@ class Home extends StatelessWidget {
                                     onTap: () =>
                                         Get.toNamed(Routes.editProfile),
                                     child: Image.memory(
+                                      profileController.userProfile!.image,
                                       height: 40,
                                       width: 40,
                                       fit: BoxFit.fitWidth,
-                                      profileController.userProfile!.image,
                                     ),
                                   ),
                                 ),
@@ -138,15 +139,15 @@ class Home extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(
+                Padding(
+                  padding: const EdgeInsets.only(
                     left: 30,
                     top: 30,
                     right: 30,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                         "How do you feel?",
                         style: TextStyle(
